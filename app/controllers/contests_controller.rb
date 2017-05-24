@@ -1,0 +1,43 @@
+class ContestsController < ApplicationController
+  before_action :set_contest, only: [:show, :update, :destroy]
+
+  # GET /contests
+  def index
+    @contests = Contest.all
+    json_response(@contests)
+  end
+
+  # POST /contests
+  def create
+    @contest = Contest.create!(contest_params)
+    json_response(@contest, :created)
+  end
+
+  # GET /contests/:id
+  def show
+    json_response(@contest)
+  end
+
+  # PUT /contests/:id
+  def update
+    @contest.update(contest_params)
+    head :no_content
+  end
+
+  # DELETE /contests/:id
+  def destroy
+    @contest.destroy
+    head :no_content
+  end
+
+  private
+
+  def contest_params
+    # whitelist params
+    params.permit(:pet_1_id, :pet_2_id, :arena_id)
+  end
+
+  def set_contest
+    @contest = Contest.find(params[:id])
+  end
+end

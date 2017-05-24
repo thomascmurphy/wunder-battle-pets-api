@@ -26,12 +26,15 @@ gem 'puma', '~> 3.7'
 # gem 'rack-cors'
 
 gem 'httparty'
-gem 'delayed_job_active_record'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   gem 'rspec-rails', '~> 3.5'
+  gem 'pry'
+  gem 'pry-remote'
+  gem 'pry-nav'
+  gem 'pry-rails'
 end
 
 group :test do

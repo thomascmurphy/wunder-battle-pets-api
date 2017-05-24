@@ -6,19 +6,18 @@ module Pets
   class Request
 
     include HTTParty
-    base_uri 'https://wunder-pet-api-staging.herokuapp.com/'
+    base_uri 'https://wunder-pet-api-staging.herokuapp.com'
 
-    def initialize(region="na")
-      @region = region
+    def initialize
       @options = { headers: {"X-Pets-Token": Rails.application.secrets.pets_api_token}, query: {}}
     end
 
     def call(url, type="get", extra_query={})
       @options[:query] = @options[:query].merge(extra_query)
-      case type
-      when type.downcase=="get"
+      case type.downcase
+      when "get"
         response = self.class.get(url, @options)
-      when type.downcase=="post"
+      when "post"
         response = self.class.post(url, @options)
       else
         response = nil
@@ -32,15 +31,15 @@ module Pets
     end
 
     def create_pet
-      call("pets", "post")
+      call("/pets", "post")
     end
 
     def get_pets
-      call("pets")
+      call("/pets")
     end
 
     def get_pet_by_id(id)
-      call("pets/#{id}")
+      call("/pets/#{id}")
     end
 
   end
