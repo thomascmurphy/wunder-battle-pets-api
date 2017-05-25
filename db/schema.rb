@@ -12,23 +12,23 @@
 
 ActiveRecord::Schema.define(version: 20170524192133) do
 
-  create_table "arenas", force: :cascade do |t|
-    t.string "battle_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["battle_type"], name: "index_arenas_on_battle_type"
-  end
-
   create_table "contests", force: :cascade do |t|
     t.string "pet_1_id"
     t.string "pet_2_id"
     t.string "winner_id"
-    t.integer "arena_id"
+    t.integer "discipline_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["arena_id"], name: "index_contests_on_arena_id"
+    t.index ["discipline_id"], name: "index_contests_on_discipline_id"
     t.index ["pet_1_id"], name: "index_contests_on_pet_1_id"
     t.index ["pet_2_id"], name: "index_contests_on_pet_2_id"
+  end
+
+  create_table "disciplines", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_disciplines_on_name"
   end
 
 end

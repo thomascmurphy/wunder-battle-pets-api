@@ -49,7 +49,7 @@ RSpec.describe 'Contests API', type: :request do
   end
 
   describe 'POST /contests' do
-    let(:valid_attributes) { { pet_1_id: pet_1_id, pet_2_id: pet_2_id, arena_id: contests.first.arena.id } }
+    let(:valid_attributes) { { pet_1_id: pet_1_id, pet_2_id: pet_2_id, discipline_id: contests.first.discipline.id } }
 
     context 'when the request is valid' do
       before { post '/contests', params: valid_attributes }
@@ -65,7 +65,7 @@ RSpec.describe 'Contests API', type: :request do
     end
 
     context 'when the request is invalid' do
-      before { post '/contests', params: { pet_1_id: pet_1_id, arena_id: contests.first.arena.id } }
+      before { post '/contests', params: { pet_1_id: pet_1_id, discipline_id: contests.first.discipline.id } }
 
       it 'returns status code 422' do
         expect(response).to have_http_status(422)
@@ -80,7 +80,7 @@ RSpec.describe 'Contests API', type: :request do
 
   # Test suite for PUT /contests/:id
   describe 'PUT /contests/:id' do
-    let(:valid_attributes) { { arena_id: 2 } }
+    let(:valid_attributes) { { discipline_id: 2 } }
 
     context 'when the record exists' do
       before { put "/contests/#{contest_id}", params: valid_attributes }

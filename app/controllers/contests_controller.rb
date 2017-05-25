@@ -9,7 +9,10 @@ class ContestsController < ApplicationController
 
   # POST /contests
   def create
-    @contest = Contest.create!(contest_params)
+    @contest = Contest.find_by(contest_params)
+    if @contest.blank?
+      @contest = Contest.create!(contest_params)
+    end
     json_response(@contest, :created)
   end
 
@@ -34,7 +37,7 @@ class ContestsController < ApplicationController
 
   def contest_params
     # whitelist params
-    params.permit(:pet_1_id, :pet_2_id, :arena_id)
+    params.permit(:pet_1_id, :pet_2_id, :discipline_id)
   end
 
   def set_contest

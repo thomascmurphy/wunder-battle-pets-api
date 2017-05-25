@@ -5,4 +5,4 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-arenas = Arena.create([{ battle_type: 'Turn Based' }, { battle_type: 'Pure Stats' }])
+disciplines = Discipline.create([{ name: Discipline::TURN_BASED_TYPE }, { name: Discipline::PURE_STATS_TYPE }])
