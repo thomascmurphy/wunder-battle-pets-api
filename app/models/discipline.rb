@@ -3,8 +3,8 @@ class Discipline < ApplicationRecord
 
   validates_presence_of :name
 
-  TURN_BASED_TYPE = "Turn Based".freeze
-  PURE_STATS_TYPE = "Pure Stats".freeze
+  TURN_BASED_TYPE = "turn_based".freeze
+  PURE_STATS_TYPE = "pure_stats".freeze
 
   def determine_winner(pets)
     pets = pets.map{|p| p.with_indifferent_access}
@@ -62,7 +62,7 @@ class Discipline < ApplicationRecord
     tiebreak_fields = ["strength", "intelligence", "speed", "integrity"]
     field = 0
     while total == 2 && field < 4
-      total += 0.1 if pet_1[tiebreak_fields[field]] > pet_2[tiebreak_fields[field]]
+      total += 0.1 if pet_1.with_indifferent_access[tiebreak_fields[field]] > pet_2.with_indifferent_access[tiebreak_fields[field]]
       field += 1
     end
     return total

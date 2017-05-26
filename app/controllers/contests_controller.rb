@@ -9,6 +9,10 @@ class ContestsController < ApplicationController
 
   # POST /contests
   def create
+    if contest_params[:discipline_id].blank? && params[:discipline_name].present?
+      discipline = Discipline.find_by(name: params[:discipline_name])
+      params[:discipline_id] = discipline.id if discipline.present?
+    end
     @contest = Contest.find_by(contest_params)
     if @contest.blank?
       @contest = Contest.create!(contest_params)
