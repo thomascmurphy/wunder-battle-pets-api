@@ -9,15 +9,15 @@ RSpec.describe Discipline, type: :model do
 
   describe 'battles' do
     it 'calculates damage properly' do
-      expect(Discipline.damage_dealt(strong_fast_dumb_frail, weak_slow_smart_beefy, false).round(2)).to eq(21.39)
+      expect(Discipline.damage_dealt(strong_fast_dumb_frail, weak_slow_smart_beefy, false).round).to eq(21)
     end
 
     it 'works for turn_based' do
-      expect(Discipline.turn_based_battle([strong_fast_dumb_frail, weak_slow_smart_beefy], false)).to eq(strong_fast_dumb_frail)
+      expect(Discipline.turn_based_battle([strong_fast_dumb_frail, weak_slow_smart_beefy], false)[:winner]).to eq(strong_fast_dumb_frail)
     end
 
     it 'works for pure_stats' do
-      expect(Discipline.pure_stats_battle([strong_fast_dumb_frail, weak_slow_smart_beefy])).to eq(strong_fast_dumb_frail)
+      expect(Discipline.pure_stats_battle([strong_fast_dumb_frail, weak_slow_smart_beefy])[:winner]).to eq(strong_fast_dumb_frail)
     end
   end
 end

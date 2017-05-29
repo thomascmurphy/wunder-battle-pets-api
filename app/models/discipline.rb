@@ -10,7 +10,7 @@ class Discipline < ApplicationRecord
     pets = pets.map{|p| p.with_indifferent_access}
     case self.name
     when Discipline::TURN_BASED_TYPE
-      winner = Discipline.turn_based_battle(pets)
+      winner = Discipline.turn_based_battle(pets, false)
     when Discipline::PURE_STATS_TYPE
       winner = Discipline.pure_stats_battle(pets)
     else
@@ -19,23 +19,29 @@ class Discipline < ApplicationRecord
     return winner
   end
 
-  def self.turn_based_battle(pets, use_blocking_chance=true)
+  def self.turn_based_battle(pets, use_blocking_chance=false)
     winner = nil
-    pets_ordered = pets.sort_by{|p| [p[:speed], p[:intelligence], p[:strength]]}.reverse
+    pets_ordered = pets.deep_dup.sort_by{|p| [p[:speed], p[:intelligence], p[:strength]]}.reverse
     attacking_pet_index = 0
+    play_by_play = []
     while pets_ordered.map{|p| p[:integrity]}.min > 0
       defending_pet_index = (attacking_pet_index + 1) % pets.length
       defending_pet = pets_ordered[defending_pet_index]
       attacking_pet = pets_ordered[attacking_pet_index]
-      pets_ordered[defending_pet_index][:integrity] = pets_ordered[defending_pet_index][:integrity] - damage_dealt(attacking_pet, defending_pet, use_blocking_chance)
+      damage = damage_dealt(attacking_pet, defending_pet, use_blocking_chance)
+      pets_ordered[defending_pet_index][:integrity] = pets_ordered[defending_pet_index][:integrity] - damage
+      play_by_play << "#{attacking_pet[:name]} attacked for #{damage} damage, #{defending_pet[:name]} is left with #{pets_ordered[defending_pet_index][:integrity]} integrity"
       attacking_pet_index = defending_pet_index
     end
     winner = pets_ordered.sort_by{|p| p[:integrity]}.last
-    return winner
+    play_by_play << "#{winner[:name]} is victorious!"
+    return {winner: winner, play_by_play: play_by_play, pets: pets}
   end
 
   def self.pure_stats_battle(pets)
-    winner = pets.sort{|a, b| stat_quantification(a, b) }.last
+    winner = pets.deep_dup.sort{|a, b| stat_quantification(a, b) }.last
+    play_by_play = ["#{winner[:name]} is victorious!"]
+    return {winner: winner, play_by_play: play_by_play, pets: pets}
   end
 
   def self.damage_dealt(attacking_pet, defending_pet, use_blocking_chance)
@@ -49,7 +55,7 @@ class Discipline < ApplicationRecord
       #a damage reduction version
       damage = (attacking_pet[:strength] + attacking_pet[:speed]) * (1 - block_chance)
     end
-    return damage
+    return damage.round
   end
 
   def self.stat_quantification(pet_1, pet_2)
